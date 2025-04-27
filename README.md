@@ -1,5 +1,4 @@
-# Let's create the README.md file with the provided content
-readme_content = """
+
 # Farm Buddy - Angular Project
 
 Farm Buddy is an Angular-based online store project that allows users to browse products, add them to their cart, and manage their profile.
@@ -30,4 +29,26 @@ If you haven't already, clone the project repository to your local machine by ru
 
 ```bash
 git clone <repository-url>
+```
 
+Alternatively, you can download the ZIP file from GitHub and extract it to a folder on your system.
+
+### 2. Install Dependencies
+
+Navigate to the project folder in your terminal and install the required dependencies by running the following command:
+
+```bash
+npm install
+```
+
+This will install all the necessary packages and dependencies needed for the project to run.
+
+### 3. Run the Project
+
+Once the dependencies are installed, you can start the development server with:
+
+```bash
+ng serve
+```
+
+By default, this will run the project on `http://localhost:4200/`. Open this URL in your browser to see the app in action.
