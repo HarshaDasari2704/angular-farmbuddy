@@ -1,0 +1,92 @@
+<!-- Header -->
+<header>
+    <div class="logo">
+      <h1>Farm<span>buddy</span></h1>
+    </div>
+    <nav>
+      <a class="cart-link" (click)="toggleCartPopup()">Cart
+        <span id="cartCount" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+      <div class="profile-menu">
+        <img [src]="profileImageUrl || 'assets/images/default-profile.jpg'" alt="Profile" class="profile-pic" (click)="openProfilePanel()">
+        <div class="dropdown" *ngIf="isProfilePanelOpen">
+          <a href="javascript:void(0)" (click)="editProfile()">Edit Profile</a>
+          <a href="javascript:void(0)" (click)="logout()">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Filters Section -->
+  <section class="filters">
+    <input [(ngModel)]="searchQuery" placeholder="Search products..." />
+    <select [(ngModel)]="selectedCategory">
+      <option value="">All Categories</option>
+      <option value="vegetables">Vegetables</option>
+      <option value="fruits">Fruits</option>
+      <option value="grains">Grains</option>
+    </select>
+  </section>
+  
+  <!-- Product Section -->
+  <main>
+    <div class="products-container">
+      <div *ngFor="let product of filteredProducts()" class="product-card">
+        <img [src]="product.imageUrl" alt="{{ product.name }}" />
+        <h3>{{ product.name }}</h3>
+        <p>₹{{ product.price }}</p>
+        <button (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Edit Profile Panel -->
+  <div class="profile-panel" [ngClass]="{'open': isProfilePanelOpen}">
+    <div class="profile-panel-content">
+      <h2>Edit Profile</h2>
+      <form (ngSubmit)="saveProfile()">
+        <label for="profilePic">Profile Picture</label>
+        <input type="file" id="profilePic" (change)="handleProfileImage($event)" />
+        <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-preview" alt="Profile Image" />
+        
+        <label for="name">Name</label>
+        <input type="text" [(ngModel)]="profileName" name="profileName" required />
+      
+        <label for="address">Address</label>
+        <input type="text" [(ngModel)]="profileAddress" name="profileAddress" required />
+      
+        <label for="email">Email</label>
+        <input type="email" [(ngModel)]="profileEmail" name="profileEmail" required />
+      
+        <label for="mobile">Mobile Number</label>
+        <input type="tel" [(ngModel)]="profileMobile" name="profileMobile" required />
+      
+        <button type="submit">Save Changes</button>
+      </form>
+      <button class="close-btn" (click)="closeProfilePanel()">X</button>
+    </div>
+  </div>
+  
+  <!-- Cart Popup -->
+   <!-- Cart Popup -->
+<div class="cart-popup" [ngClass]="{'open': isCartPopupVisible}">
+    <div class="cart-popup-content">
+      <!-- Close button -->
+     
+  
+      <h3>Cart</h3>
+      <ul>
+        <li *ngFor="let item of cartItems">
+          {{ item.name }} x {{ item.quantity }} - ₹{{ item.price * item.quantity }}
+          <button (click)="removeFromCart(item)">Remove</button>
+        </li>
+      </ul>
+      <div class="total">
+        <p>Total: ₹{{ totalAmount }}</p>
+        <button (click)="checkout()">Checkout</button>
+        <button class="close-cart-btn" (click)="toggleCartPopup()">×</button>
+      </div>
+    </div>
+  </div>
+  
+  

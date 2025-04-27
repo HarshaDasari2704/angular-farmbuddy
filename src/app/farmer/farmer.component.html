@@ -1,0 +1,151 @@
+<div class="farmer-dashboard">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="farmer-profile">
+      <img [src]="profileImageUrl || 'https://i.pinimg.com/736x/15/0f/a8/150fa8800b0a0d5633abc1d1c4db3d87.jpg'" alt="Farmer Photo" />
+      <h3>{{ profileName }}</h3>
+      <p>{{ profileAddress }}</p>
+    </div>
+    <ul>
+      <li><a (click)="switchPage('dashboardContent')" [class.active]="selectedPage === 'dashboardContent'">Dashboard</a></li>
+      <li><a (click)="switchPage('productsContent')" [class.active]="selectedPage === 'productsContent'">My Products</a></li>
+      <li><a (click)="switchPage('ordersContent')" [class.active]="selectedPage === 'ordersContent'">View Orders</a></li>
+      <li><a (click)="switchPage('ProfileContent')" [class.active]="selectedPage === 'ProfileContent'">Profile</a></li>
+      <li><a routerLink="/signin" id="farmerLogout">Logout</a></li>
+    </ul>      
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Dashboard Overview -->
+    <div *ngIf="selectedPage === 'dashboardContent'">
+      <h2>Welcome, {{ profileName }}! 👨‍🌾</h2>
+      <div id="dashboardContent" >
+        <p class="sub-text">Here’s a quick overview of your farm's performance.</p>
+
+        <div class="dashboard-summary">
+          <div class="detail-card">
+            <h3>Total Products</h3>
+            <p><strong>12</strong></p>
+            <span class="sub-text">Active listings this month</span>
+          </div>
+          <div class="detail-card">
+            <h3>Orders Received</h3>
+            <p><strong>87</strong></p>
+            <span class="sub-text">Across all crops</span>
+          </div>
+          <div class="detail-card">
+            <h3>Monthly Revenue</h3>
+            <p><strong>₹ 42,300</strong></p>
+            <span class="sub-text">April 2025</span>
+          </div>
+          <div class="detail-card">
+            <h3>Top Product</h3>
+            <p><strong>Organic Tomatoes</strong></p>
+            <span class="sub-text">Sold 320 kg this month</span>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 40px;">Recent Orders</h3>
+        <div class="order-list">
+          <div class="order-item">
+            <p>Order #145 - Cabbage (10kg)</p>
+            <span class="status badge-pending">Pending</span>
+          </div>
+          <div class="order-item">
+            <p>Order #144 - Spinach (3kg)</p>
+            <span class="status badge-completed">Completed</span>
+          </div>
+          <div class="order-item">
+            <p>Order #143 - Onions (15kg)</p>
+            <span class="status badge-completed">Completed</span>
+          </div>
+          <div class="order-item">
+            <p>Order #142 - Potatoes (25kg)</p>
+            <span class="status badge-pending">Pending</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Products Section -->
+    <div *ngIf="selectedPage === 'productsContent'">
+      <h2>My Products</h2>
+      <button (click)="toggleProductForm()" class="btn-primary">Add New Product</button>
+
+      <div *ngIf="showProductForm" class="product-form">
+        <h3>Add New Product</h3>
+        <form (ngSubmit)="addProduct()">
+          <input type="text" placeholder="Product Name" [(ngModel)]="newProduct.name" name="productName" required />
+          <input type="number" placeholder="Quantity (kg)" [(ngModel)]="newProduct.quantity" name="productQty" required />
+          <input type="number" placeholder="Price per kg (₹)" [(ngModel)]="newProduct.price" name="productPrice" required />
+          <input type="file" (change)="handleProductImage($event)" required />
+          <img *ngIf="newProduct.imageUrl" [src]="newProduct.imageUrl" class="product-preview" />
+          <button type="submit">Add Product</button>
+        </form>
+      </div>
+
+      <div class="products-grid">
+        <div *ngFor="let product of products" class="detail-card">
+          <img [src]="product.imageUrl" alt="{{ product.name }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+          <h3>{{ product.name }}</h3>
+          <p>Quantity: {{ product.quantity }} kg</p>
+          <p>Price: ₹{{ product.price }}/kg</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Section -->
+    <div *ngIf="selectedPage === 'ordersContent'">
+      <h2>View Orders</h2>
+
+      <h3>Pending Orders</h3>
+      <div class="order-row pending-orders">
+        <div *ngFor="let order of pendingOrders" class="order-card">
+          <h4>Order #{{ order.id }}</h4>
+          <p>Product: {{ order.product }}</p>
+          <p>Quantity: {{ order.qty }}</p>
+          <p>Status: {{ order.status }}</p>
+          <button (click)="updateOrderStatus(order)">{{ getNextStatusLabel(order.status) }}</button>
+        </div>
+      </div>
+
+      <h3>Completed Orders</h3>
+      <div class="order-row completed-orders">
+        <div *ngFor="let order of completedOrders" class="order-card">
+          <h4>Order #{{ order.id }}</h4>
+          <p>Product: {{ order.product }}</p>
+          <p>Quantity: {{ order.qty }}</p>
+          <p>Status: {{ order.status }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div id="ProfileContent" *ngIf="selectedPage === 'ProfileContent'">
+      <h2>My Profile</h2>
+      <form>
+        <label for="profilePic">Profile Picture</label>
+        <input type="file" id="profilePic" (change)="handleProfileImage($event)" />
+        <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-preview" />
+
+        <label>Name</label>
+        <input type="text" [(ngModel)]="profileName" name="profileName" required />
+
+        <label>Address</label>
+        <input type="text" [(ngModel)]="profileAddress" name="profileAddress" required />
+
+        <label>Email</label>
+        <input type="email" [(ngModel)]="profileEmail" name="profileEmail" required />
+
+        <label>Mobile Number</label>
+        <input type="tel" [(ngModel)]="profileMobile" name="profileMobile" required />
+
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+    </div>
+
+  </main>
+</div>

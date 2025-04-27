@@ -1,0 +1,62 @@
+<div class="container" id="container">
+  <!-- Sign Up -->
+  <div class="form-container sign-up-container">
+    <form (submit)="onSignUp($event)">
+      <h1>Create Your FarmBuddy Account</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="social"><i class="bi bi-google"></i></a>
+      </div>
+      <span>or use your email to register</span>
+      <input type="text" placeholder="Full Name" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <select name="role" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="farmer">Farmer</option>
+        <option value="buyer">Buyer</option>
+      </select>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <!-- Sign In -->
+<div class="form-container sign-in-container">
+  <form (submit)="onSignIn($event)">
+    <h1>Welcome Back to FarmBuddy</h1>
+    <div class="social-container">
+      <a href="#" class="social"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="social"><i class="bi bi-google"></i></a>
+    </div>
+    <span>Sign in with your FarmBuddy account</span>
+    <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+   <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required />
+    
+    <select name="role" required>
+      <option value="" disabled selected>Select Role</option>
+      <option value="farmer">Farmer</option>
+      <option value="buyer">Buyer</option>
+    </select>
+
+    <a href="#">Forgot your password?</a>
+    <button type="submit">Sign In</button>
+  </form>
+</div>
+
+
+  <!-- Overlay -->
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back, Farmer or Buyer!</h1>
+        <p>To continue growing or shopping with FarmBuddy, please sign in.</p>
+        <button class="ghost" id="signIn" (click)="moveToSignIn()">Sign In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello, Grower or Shopper!</h1>
+        <p>Join the FarmBuddy community—whether you're cultivating or consuming!</p>
+        <button class="ghost" id="signUp" (click)="moveToSignUp()">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
